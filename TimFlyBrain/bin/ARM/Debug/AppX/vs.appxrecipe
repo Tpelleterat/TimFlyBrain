@@ -28,13 +28,13 @@
     <AppXManifest Include="D:\Data\Documents\Travail\Production\Drone DIY\Ordinateur de bord\TimFly\TimFlyBrain\TimFlyBrain\bin\ARM\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-08-21T12:30:45.967</Modified>
+      <Modified>2017-09-13T23:24:37.393</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="D:\Data\Documents\Travail\Production\Drone DIY\Ordinateur de bord\TimFly\TimFlyBrain\TimFlyBrain\bin\ARM\Debug\TimFlyBrain.exe">
       <PackagePath>entrypoint\TimFlyBrain.exe</PackagePath>
-      <Modified>2017-08-21T12:30:45.155</Modified>
+      <Modified>2017-09-13T23:24:36.785</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\tpell\.nuget\packages\Microsoft.CSharp\4.0.0\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -497,11 +497,11 @@
     <AppxPackagedFile Include="D:\Data\Documents\Travail\Production\Drone DIY\Ordinateur de bord\TimFly\TimFlyBrain\TimFlyBrain\bin\ARM\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-08-21T12:30:45.655</Modified>
+      <Modified>2017-09-10T21:07:46.660</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Data\Documents\Travail\Production\Drone DIY\Ordinateur de bord\TimFly\TimFlyBrain\TimFlyBrain\bin\ARM\Debug\Core\TimFlyBrain.exe">
       <PackagePath>TimFlyBrain.exe</PackagePath>
-      <Modified>2017-08-21T12:30:45.962</Modified>
+      <Modified>2017-09-13T23:24:37.381</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

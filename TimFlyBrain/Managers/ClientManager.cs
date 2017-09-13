@@ -16,8 +16,22 @@ namespace Managers
     {
         private SocketServerService _socketServerService;
         public event EventHandler OnCalibrationRequest;
+        public event EventHandler<string> OnElevationChange;
+        public event EventHandler<string> OnPitchChange;
+        public event EventHandler<string> OnRollChange;
+        public event EventHandler OnAskStatus;
+        public event EventHandler OnInitialization;
 
-        public bool IsConnected { get; set; }
+        private const string ELEVATION_COMMAND = "ELEVATION";
+        private const string PITCH_COMMAND = "PITCH";
+        private const string ROLL_COMMAND = "ROLL";
+        private const string STATUS_COMMAND = "STATUS";
+        private const string INITIALIZATION_COMMAND = "INITIALIZATION";
+
+        public bool IsConnected
+        {
+            get; set;
+        }
 
         public ClientManager()
         {
@@ -80,11 +94,40 @@ namespace Managers
         /// </summary>
         private void OnSocketMessageReceived(object sender, string data)
         {
-            if(data != null && data.ToLower().Equals("calibration"))
+            Debug.WriteLine(data);
+
+            ReadCommands(data);
+        }
+
+        private void ReadCommands(string messageData)
+        {
+            List<string> commands = messageData.Split(';')?.ToList();
+
+            Parallel.ForEach(commands, (command) =>
             {
-                if (OnCalibrationRequest != null)
-                    OnCalibrationRequest(this, new EventArgs());
-            }
+                string data = command.Split('|')?.ToList().Last();
+
+                if (command.Contains(ELEVATION_COMMAND))
+                {
+                    OnElevationChange?.Invoke(this, data);
+                }
+                else if (command.Contains(PITCH_COMMAND))
+                {
+                    OnPitchChange?.Invoke(this, data);
+                }
+                else if (command.Contains(ROLL_COMMAND))
+                {
+                    OnRollChange?.Invoke(this, data);
+                }
+                else if (command.Contains(STATUS_COMMAND))
+                {
+                    OnAskStatus?.Invoke(this, new EventArgs());
+                }
+                else if (command.Contains(INITIALIZATION_COMMAND))
+                {
+                    OnInitialization?.Invoke(this, new EventArgs());
+                }
+            });
         }
 
         #endregion
