@@ -101,6 +101,7 @@
     <Compile Include="Managers\ArduinoManager.cs" />
     <Compile Include="Managers\ClientManager.cs" />
     <Compile Include="Managers\GlobalManager.cs" />
+    <Compile Include="Models\BrainStatusEnum.cs" />
     <Compile Include="Models\SocketClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SerialCommunicationService.cs" />
