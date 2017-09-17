@@ -27,6 +27,7 @@ namespace Services
     {
 
         public event EventHandler<string> OnMessageReceived;
+        public event EventHandler OnSerialConnected;
         public event EventHandler OnSerialDisconnected;
         private bool _deviceConnected;
         SerialDevice _serialPort;
@@ -74,7 +75,7 @@ namespace Services
                 Task taskReceive = Task.Run(() => { ReadLoop(_serialPort.InputStream); });
                 await taskReceive.ConfigureAwait(false);
 
-
+                OnSerialConnected?.Invoke(this, new EventArgs());
                 return true;
             }
             return false;
@@ -145,8 +146,7 @@ namespace Services
             _deviceConnected = false;
             _serialPort = null;
 
-            if (OnSerialDisconnected != null)
-                OnSerialDisconnected(this, new EventArgs());
+            OnSerialDisconnected?.Invoke(this, new EventArgs());
         }
     }
 }

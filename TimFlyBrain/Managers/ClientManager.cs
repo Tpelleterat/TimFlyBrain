@@ -15,16 +15,17 @@ namespace Managers
     public class ClientManager
     {
         private SocketServerService _socketServerService;
-        public event EventHandler OnCalibrationRequest;
         public event EventHandler<string> OnElevationChange;
         public event EventHandler<string> OnPitchChange;
         public event EventHandler<string> OnRollChange;
         public event EventHandler OnAskStatus;
         public event EventHandler OnInitialization;
 
+        private const string DATA_SEPARATOR_COMMAND = "|";
         private const string ELEVATION_COMMAND = "ELEVATION";
         private const string PITCH_COMMAND = "PITCH";
         private const string ROLL_COMMAND = "ROLL";
+        private const string ASKSTATUS_COMMAND = "ASKSTATUS";
         private const string STATUS_COMMAND = "STATUS";
         private const string INITIALIZATION_COMMAND = "INITIALIZATION";
 
@@ -51,19 +52,9 @@ namespace Managers
             await _socketServerService.StartServer();
         }
 
-        /// <summary>
-        /// Envoie les position de l'acceleromètre au client connecté
-        /// </summary>
-        public async Task SendAccelerometerPosition(int x, int y, int z)
+        public async Task SendStatus(string status)
         {
-            StringBuilder messageBuilder = new StringBuilder();
-            messageBuilder.Append(x);
-            messageBuilder.Append("|");
-            messageBuilder.Append(y);
-            messageBuilder.Append("|");
-            messageBuilder.Append(z);
-
-            await _socketServerService.SendMessage(messageBuilder.ToString());
+            await _socketServerService.SendMessage(string.Concat(STATUS_COMMAND, DATA_SEPARATOR_COMMAND, status));
         }
 
         public async Task SendMessage(string message)
@@ -119,7 +110,7 @@ namespace Managers
                 {
                     OnRollChange?.Invoke(this, data);
                 }
-                else if (command.Contains(STATUS_COMMAND))
+                else if (command.Contains(ASKSTATUS_COMMAND))
                 {
                     OnAskStatus?.Invoke(this, new EventArgs());
                 }

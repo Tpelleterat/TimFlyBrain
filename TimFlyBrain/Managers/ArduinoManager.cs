@@ -26,6 +26,8 @@ namespace Managers
 
         const string INIT_OK_MESSAGE = "INIT_OK";
 
+        public event EventHandler OnArduinoConnected;
+        public event EventHandler OnArduinoDisconnected;
         public event EventHandler<string> OnNewPosition;
         private SerialCommunicationService _serialCommunicationService;
         string _messageBuilder = string.Empty;
@@ -42,6 +44,7 @@ namespace Managers
         {
             _serialCommunicationService = new SerialCommunicationService();
             _serialCommunicationService.OnSerialDisconnected += OnSerialCommunicationServiceDisconnected;
+            _serialCommunicationService.OnSerialConnected += OnSerialCommunicationServiceConnected;
             _serialCommunicationService.OnMessageReceived += OnSerialCommunicationServiceMessageReceived;
         }
 
@@ -301,7 +304,13 @@ namespace Managers
         /// </summary>
         private void OnSerialCommunicationServiceDisconnected(object sender, EventArgs e)
         {
+            OnArduinoDisconnected?.Invoke(this, new EventArgs());
             StartConnectionLoop();
+        }
+
+        private void OnSerialCommunicationServiceConnected(object sender, EventArgs e)
+        {
+            OnArduinoConnected?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
