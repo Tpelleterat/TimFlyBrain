@@ -58,10 +58,7 @@ namespace Service
 
             _someClientConnected = true;
 
-            if (OnClientConnected != null)
-            {
-                OnClientConnected(this, client.Id);
-            }
+            OnClientConnected?.Invoke(this, client.Id);
         }
 
         /// <summary>

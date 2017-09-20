@@ -28,14 +28,14 @@ namespace Managers
 
         public event EventHandler OnArduinoConnected;
         public event EventHandler OnArduinoDisconnected;
-        public event EventHandler<string> OnNewPosition;
+        public event EventHandler OnReceiveInitialzationOk;
         private SerialCommunicationService _serialCommunicationService;
-        string _messageBuilder = string.Empty;
-        int PichIndice;
-        int RollIndice;
-        int ElevationIndice;
-        bool NewElevationValue;
-        bool MovementLoopOn;
+        private string _messageBuilder = string.Empty;
+        private int _pichIndice;
+        private int _rollIndice;
+        private int _elevationIndice;
+        private bool _newElevationValue;
+        private bool _movementLoopOn;
 
         /// <summary>
         /// Initialise la nouvelle instance
@@ -110,7 +110,6 @@ namespace Managers
             if (messageEnd)
             {
                 ManageSerialMessage(totalMessage);
-
             }
         }
 
@@ -119,14 +118,6 @@ namespace Managers
             if (message.Contains(INIT_OK_MESSAGE))
             {
                 Initialisation();
-            }
-            else
-            {
-#warning DEBUG
-                message = message.Replace(":", "");
-                message = message.Replace(";", "");
-
-                OnNewPosition?.Invoke(this, message);
             }
         }
 
@@ -140,6 +131,8 @@ namespace Managers
 
         public void Initialisation()
         {
+            OnReceiveInitialzationOk?.Invoke(this, new EventArgs());
+
             StartMovementLoop();
         }
 
@@ -151,10 +144,10 @@ namespace Managers
         {
             int compensedValue = value * 5;
 
-            if (ElevationIndice != compensedValue)
+            if (_elevationIndice != compensedValue)
             {
-                ElevationIndice = compensedValue;
-                NewElevationValue = true;
+                _elevationIndice = compensedValue;
+                _newElevationValue = true;
             }
         }
 
@@ -166,9 +159,9 @@ namespace Managers
         {
             int compensedValue = value * 5;
 
-            if (PichIndice != compensedValue)
+            if (_pichIndice != compensedValue)
             {
-                PichIndice = compensedValue;
+                _pichIndice = compensedValue;
             }
         }
 
@@ -180,9 +173,9 @@ namespace Managers
         {
             int compensedValue = value * 5;
 
-            if (RollIndice != compensedValue)
+            if (_rollIndice != compensedValue)
             {
-                RollIndice = compensedValue;
+                _rollIndice = compensedValue;
             }
         }
 
@@ -191,16 +184,16 @@ namespace Managers
         /// </summary>
         public async void StartMovementLoop()
         {
-            MovementLoopOn = true;
+            _movementLoopOn = true;
 
             await Task.Run(async () =>
             {
-                while (MovementLoopOn)
+                while (_movementLoopOn)
                 {
                     string message = string.Empty;
 
-                    string pichStringMessage = ConvertNumericToMessageString(Convert.ToUInt32(Math.Abs(PichIndice)));
-                    if (PichIndice < 0)
+                    string pichStringMessage = ConvertNumericToMessageString(Convert.ToUInt32(Math.Abs(_pichIndice)));
+                    if (_pichIndice < 0)
                     {
                         message = string.Format(PICK_MESSAGE, NEGATIF_CHARACTER, pichStringMessage);
                     }
@@ -209,8 +202,8 @@ namespace Managers
                         message = string.Format(PICK_MESSAGE, "", pichStringMessage);
                     }
 
-                    string rollStringMessage = ConvertNumericToMessageString(Convert.ToUInt32(Math.Abs(RollIndice)));
-                    if (RollIndice < 0)
+                    string rollStringMessage = ConvertNumericToMessageString(Convert.ToUInt32(Math.Abs(_rollIndice)));
+                    if (_rollIndice < 0)
                     {
                         message += string.Format(ROLL_MESSAGE, NEGATIF_CHARACTER, rollStringMessage);
                     }
@@ -219,10 +212,10 @@ namespace Managers
                         message += string.Format(ROLL_MESSAGE, "", rollStringMessage);
                     }
 
-                    if (NewElevationValue)
+                    if (_newElevationValue)
                     {
-                        NewElevationValue = false;
-                        message += string.Format(ELEVATION_MESSAGE, ConvertNumericToMessageString(Convert.ToUInt32(ElevationIndice)));
+                        _newElevationValue = false;
+                        message += string.Format(ELEVATION_MESSAGE, ConvertNumericToMessageString(Convert.ToUInt32(_elevationIndice)));
                     }
 
                     _serialCommunicationService.SendMessage(message);
