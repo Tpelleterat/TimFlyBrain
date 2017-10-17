@@ -10,7 +10,7 @@ namespace TimFlyBrain.Managers
 {
     public class GlobalManager
     {
-        private BrainStatusEnum status = BrainStatusEnum.ControllerNotConnected;
+        private BrainStatusEnum _status = BrainStatusEnum.Fly;
         private ArduinoManager _arduinoManager;
         private ClientManager _clientManager;
         private bool _isInitialized;
@@ -50,6 +50,8 @@ namespace TimFlyBrain.Managers
             _arduinoManager.StartConnectionLoop();
 
             _clientManager = new ClientManager();
+            _clientManager.OnConnect += OnClientManagerConnect;
+            _clientManager.OnDisconnect += OnClientManagerDisconnect;
             _clientManager.OnElevationChange += OnClientManagerElevationChange;
             _clientManager.OnRollChange += OnClientManagerRollChange;
             _clientManager.OnPitchChange += OnClientManagerPitchChange;
@@ -63,7 +65,7 @@ namespace TimFlyBrain.Managers
 
         private async void ChangeStatus(BrainStatusEnum newStatus)
         {
-            status = newStatus;
+            _status = newStatus;
             await SendStatus();
         }
 
@@ -71,7 +73,7 @@ namespace TimFlyBrain.Managers
         {
             if (_clientManager.IsConnected)
             {
-                await _clientManager.SendStatus(status.ToString());
+                await _clientManager.SendStatus(_status.ToString());
             }
         }
 
@@ -87,7 +89,7 @@ namespace TimFlyBrain.Managers
 
         private void OnArduinoConnected(object sender, EventArgs e)
         {
-            ChangeStatus(BrainStatusEnum.Initialisation);
+            ChangeStatus(BrainStatusEnum.Initialization);
         }
 
         private void OnArduinoManagerInitialzationOk(object sender, EventArgs e)
@@ -98,6 +100,19 @@ namespace TimFlyBrain.Managers
         #endregion
 
         #region Client handlers
+
+        private void OnClientManagerConnect(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnClientManagerDisconnect(object sender, EventArgs e)
+        {
+            if(_status == BrainStatusEnum.Fly)
+            {
+                _arduinoManager.SecurityStop();
+            }
+        }
 
         private async void OnClientManagerAskStatus(object sender, EventArgs e)
         {
@@ -142,6 +157,5 @@ namespace TimFlyBrain.Managers
         #endregion
 
         #endregion
-
     }
 }

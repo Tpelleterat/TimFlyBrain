@@ -10,7 +10,7 @@ namespace TimFlyBrain.Models
     {
         None,
         ControllerNotConnected,
-        Initialisation,
+        Initialization,
         Fly
     }
 }

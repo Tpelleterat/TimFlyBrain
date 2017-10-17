@@ -117,7 +117,7 @@ namespace Managers
         {
             if (message.Contains(INIT_OK_MESSAGE))
             {
-                Initialisation();
+                Initialization();
             }
         }
 
@@ -129,7 +129,7 @@ namespace Managers
             _serialCommunicationService.SendMessage("i");
         }
 
-        public void Initialisation()
+        public void Initialization()
         {
             OnReceiveInitialzationOk?.Invoke(this, new EventArgs());
 
@@ -250,44 +250,11 @@ namespace Managers
             _serialCommunicationService.SendMessage("S");
         }
 
-        /// <summary>
-        /// Permet d'envoyer la valeur de calibrage du moteur avant gauche. Seulement durant la phase d'initialisation
-        /// </summary>
-        public void SendCalibrateValueFrontLeft(int value)
+        public void SecurityStop()
         {
-            string stringValue = ConvertNumericToMessageString(Convert.ToUInt32(value));
-
-            _serialCommunicationService.SendMessage(string.Format(CALIBRATION_FRONTLEFT_MESSAGE, stringValue));
-        }
-
-        /// <summary>
-        /// Permet d'envoyer la valeur de calibrage du moteur avant droite. Seulement durant la phase d'initialisation
-        /// </summary>
-        public void SendCalibrateValueFrontRight(int value)
-        {
-            string stringValue = ConvertNumericToMessageString(Convert.ToUInt32(value));
-
-            _serialCommunicationService.SendMessage(string.Format(CALIBRATION_FRONTRIGHT_MESSAGE, stringValue));
-        }
-
-        /// <summary>
-        /// Permet d'envoyer la valeur de calibrage du moteur arrière gauche. Seulement durant la phase d'initialisation
-        /// </summary>
-        public void SendCalibrateValueBackLeft(int value)
-        {
-            string stringValue = ConvertNumericToMessageString(Convert.ToUInt32(value));
-
-            _serialCommunicationService.SendMessage(string.Format(CALIBRATION_BACKLEFT_MESSAGE, stringValue));
-        }
-
-        /// <summary>
-        /// Permet d'envoyer la valeur de calibrage du moteur arrière droite. Seulement durant la phase d'initialisation
-        /// </summary>
-        public void SendCalibrateValueBackRight(int value)
-        {
-            string stringValue = ConvertNumericToMessageString(Convert.ToUInt32(value));
-
-            _serialCommunicationService.SendMessage(string.Format(CALIBRATION_BACKRIGHT_MESSAGE, stringValue));
+            ChangeElevation(0);
+            ChangePich(0);
+            ChangeRoll(0);
         }
 
         #region Handlers

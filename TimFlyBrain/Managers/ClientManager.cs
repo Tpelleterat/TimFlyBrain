@@ -14,12 +14,16 @@ namespace Managers
     /// </summary>
     public class ClientManager
     {
+        #region Attributes
+
         private SocketServerService _socketServerService;
         public event EventHandler<string> OnElevationChange;
         public event EventHandler<string> OnPitchChange;
         public event EventHandler<string> OnRollChange;
         public event EventHandler OnAskStatus;
         public event EventHandler OnInitialization;
+        public event EventHandler OnDisconnect;
+        public event EventHandler OnConnect;
 
         private const string DATA_SEPARATOR_COMMAND = "|";
         private const string ELEVATION_COMMAND = "ELEVATION";
@@ -29,15 +33,23 @@ namespace Managers
         private const string STATUS_COMMAND = "STATUS";
         private const string INITIALIZATION_COMMAND = "INITIALIZATION";
 
+        #endregion
+
+        #region Properties
+
         public bool IsConnected
         {
             get; set;
         }
 
+        #endregion
+
         public ClientManager()
         {
             _socketServerService = new SocketServerService();
         }
+
+        #region Methods
 
         /// <summary>
         /// Permet d'initialiser le manager en démarrant le serveur socket
@@ -62,6 +74,8 @@ namespace Managers
             await _socketServerService.SendMessage(message);
         }
 
+        #endregion
+
         #region Handlers
 
         /// <summary>
@@ -70,6 +84,7 @@ namespace Managers
         private void OnSocketClientConnected(object sender, string clientId)
         {
             IsConnected = true;
+            OnConnect?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -78,6 +93,7 @@ namespace Managers
         private void OnSocketClientDisconnected(object sender, EventArgs e)
         {
             IsConnected = false;
+            OnDisconnect?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
