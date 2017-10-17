@@ -133,7 +133,7 @@ namespace Managers
         {
             OnReceiveInitialzationOk?.Invoke(this, new EventArgs());
 
-            StartMovementLoop();
+            Task.Run(async () => await StartMovementLoop());
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Managers
         /// <summary>
         /// Permet de lancer la boucle d'envoie des mouvements
         /// </summary>
-        public async void StartMovementLoop()
+        public async Task StartMovementLoop()
         {
             _movementLoopOn = true;
 
