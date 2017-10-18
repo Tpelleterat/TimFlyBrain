@@ -29,7 +29,7 @@ namespace Managers
         public event EventHandler OnArduinoConnected;
         public event EventHandler OnArduinoDisconnected;
         public event EventHandler OnReceiveInitialzationOk;
-        private SerialCommunicationService _serialCommunicationService;
+        private readonly SerialCommunicationService _serialCommunicationService;
         private string _messageBuilder = string.Empty;
         private int _pichIndice;
         private int _rollIndice;
@@ -51,9 +51,9 @@ namespace Managers
         /// <summary>
         /// Permet d'initialiser le manager en démarrant le serveur socket
         /// </summary>
-        public async void StartConnectionLoop()
+        public void StartConnectionLoop()
         {
-            await Task.Run(async () =>
+            Task.Run(async () =>
             {
                 bool connected = false;
 
@@ -159,10 +159,7 @@ namespace Managers
         {
             int compensedValue = value * 5;
 
-            if (_pichIndice != compensedValue)
-            {
-                _pichIndice = compensedValue;
-            }
+            _pichIndice = compensedValue;
         }
 
         /// <summary>
@@ -173,10 +170,7 @@ namespace Managers
         {
             int compensedValue = value * 5;
 
-            if (_rollIndice != compensedValue)
-            {
-                _rollIndice = compensedValue;
-            }
+            _rollIndice = compensedValue;
         }
 
         /// <summary>
@@ -247,7 +241,18 @@ namespace Managers
         /// </summary>
         public void StopDrone()
         {
-            _serialCommunicationService.SendMessage("S");
+            //_serialCommunicationService.SendMessage("S");
+
+            ChangePich(0);
+            ChangeRoll(0);
+
+            if (_elevationIndice < 10)
+            {
+                ChangeElevation(0);
+            }else
+            {
+                //TODO faire boucle pour réduire progressivement
+            }
         }
 
         /// <summary>
