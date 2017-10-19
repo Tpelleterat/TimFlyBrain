@@ -38,7 +38,7 @@ namespace TimFlyBrain.Managers
 
         #endregion
 
-        public async void Init()
+        public async Task Init()
         {
             if (_isInitialized)
                 return;
@@ -63,7 +63,7 @@ namespace TimFlyBrain.Managers
             _isInitialized = true;
         }
 
-        private async void ChangeStatus(BrainStatusEnum newStatus)
+        private async Task ChangeStatus(BrainStatusEnum newStatus)
         {
             _status = newStatus;
             await SendStatus();
@@ -82,19 +82,19 @@ namespace TimFlyBrain.Managers
         #region Arduino handlers
 
 
-        private void OnArduinoDisconnected(object sender, EventArgs e)
+        private async void OnArduinoDisconnected(object sender, EventArgs e)
         {
-            ChangeStatus(BrainStatusEnum.ControllerNotConnected);
+            await ChangeStatus(BrainStatusEnum.ControllerNotConnected);
         }
 
-        private void OnArduinoConnected(object sender, EventArgs e)
+        private async void OnArduinoConnected(object sender, EventArgs e)
         {
-            ChangeStatus(BrainStatusEnum.Initialization);
+            await ChangeStatus(BrainStatusEnum.Initialisation);
         }
 
-        private void OnArduinoManagerInitialzationOk(object sender, EventArgs e)
+        private async void OnArduinoManagerInitialzationOk(object sender, EventArgs e)
         {
-            ChangeStatus(BrainStatusEnum.Fly);
+            await ChangeStatus(BrainStatusEnum.Fly);
         }
 
         #endregion

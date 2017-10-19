@@ -116,10 +116,7 @@ namespace Service
         /// </summary>
         private void OnClientMessageReceived(object sender, string message)
         {
-            if (OnMessageReceived != null)
-            {
-                OnMessageReceived(this, message);
-            }
+            OnMessageReceived?.Invoke(this, message);
         }
     }
 }
