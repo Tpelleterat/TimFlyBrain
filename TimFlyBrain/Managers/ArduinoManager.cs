@@ -249,17 +249,20 @@ namespace Managers
             if (_elevationIndice < 10)
             {
                 ChangeElevation(0);
-            }else
+            }
+            else
             {
+                Task.Run(async () =>
+                {
+                    await StopDroneLoop();
+                });
                 //TODO faire boucle pour réduire progressivement
             }
         }
 
-        public void SecurityStop()
+        public async Task StopDroneLoop()
         {
-            ChangeElevation(0);
-            ChangePich(0);
-            ChangeRoll(0);
+
         }
 
         #region Handlers
