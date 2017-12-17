@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TimFlyBrain;
 using Windows.Devices.Enumeration;
 
 //Arduino Nano Device Name : USB-SERIAL CH340
@@ -239,30 +240,23 @@ namespace Managers
         /// <summary>
         /// Permet d'envoyer un message serie pour l'arrêt du drone
         /// </summary>
-        public void StopDrone()
+        public async Task StopDrone()
         {
             //_serialCommunicationService.SendMessage("S");
 
             ChangePich(0);
             ChangeRoll(0);
 
-            if (_elevationIndice < 10)
+            if (_elevationIndice >= Constants.ELEVATION_MAX_FOR_SECURITY_STOP)
             {
-                ChangeElevation(0);
-            }
-            else
-            {
-                Task.Run(async () =>
+                while (_elevationIndice < Constants.ELEVATION_MAX_FOR_SECURITY_STOP)
                 {
-                    await StopDroneLoop();
-                });
-                //TODO faire boucle pour réduire progressivement
+                    ChangeElevation(_elevationIndice--);
+                    await Task.Delay(100);
+                }
             }
-        }
 
-        public async Task StopDroneLoop()
-        {
-
+            ChangeElevation(0);
         }
 
         #region Handlers

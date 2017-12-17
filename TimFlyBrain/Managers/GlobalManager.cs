@@ -106,11 +106,11 @@ namespace TimFlyBrain.Managers
 
         }
 
-        private void OnClientManagerDisconnect(object sender, EventArgs e)
+        private async void OnClientManagerDisconnect(object sender, EventArgs e)
         {
             if(_status == BrainStatusEnum.Fly)
             {
-                _arduinoManager.SecurityStop();
+                await _arduinoManager.StopDrone();
             }
         }
 
