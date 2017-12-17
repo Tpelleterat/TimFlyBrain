@@ -72,8 +72,7 @@ namespace Services
 
                 _deviceConnected = true;
 
-                Task taskReceive = Task.Run(async () => {await ReadLoop(_serialPort.InputStream); });
-                await taskReceive.ConfigureAwait(false);
+                Task taskReceive = Task.Run(() => {ReadLoop(_serialPort.InputStream); });
 
                 OnSerialConnected?.Invoke(this, new EventArgs());
                 return true;
@@ -85,7 +84,7 @@ namespace Services
         /// Lance une boucle pour lire les données envoyées par série
         /// </summary>
         /// <param name="stream"></param>
-        private async Task ReadLoop(IInputStream stream)
+        private async void ReadLoop(IInputStream stream)
         {
             var dataReader = new DataReader(stream);
             byte[] buffer = new byte[8];
@@ -100,8 +99,7 @@ namespace Services
 
                     Task taskReceive = Task.Run(() =>
                     {
-                        if (OnMessageReceived != null)
-                            OnMessageReceived(this, str);
+                        OnMessageReceived?.Invoke(this, str);
                     });
                     await taskReceive.ConfigureAwait(false);
                 }

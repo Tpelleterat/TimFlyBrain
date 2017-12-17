@@ -10,7 +10,7 @@ namespace TimFlyBrain.Managers
 {
     public class GlobalManager
     {
-        private BrainStatusEnum _status = BrainStatusEnum.Fly;
+        private BrainStatusEnum _status = BrainStatusEnum.ControllerNotConnected;
         private ArduinoManager _arduinoManager;
         private ClientManager _clientManager;
         private bool _isInitialized;
