@@ -143,7 +143,7 @@ namespace Managers
         /// <param name="message">Message a envoyer</param>
         public void ChangeElevation(int value)
         {
-            int compensedValue = value * 5;
+            int compensedValue = value * Constants.COMPENSED_MOVMENT_VALUE;
 
             if (_elevationIndice != compensedValue)
             {
@@ -158,7 +158,7 @@ namespace Managers
         /// <param name="value">valeur</param>
         public void ChangePich(int value)
         {
-            int compensedValue = value * 5;
+            int compensedValue = value * Constants.COMPENSED_MOVMENT_VALUE;
 
             _pichIndice = compensedValue;
         }
@@ -169,7 +169,7 @@ namespace Managers
         /// <param name="value">valeur</param>
         public void ChangeRoll(int value)
         {
-            int compensedValue = value * 5;
+            int compensedValue = value * Constants.COMPENSED_MOVMENT_VALUE;
 
             _rollIndice = compensedValue;
         }
