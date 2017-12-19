@@ -8,9 +8,12 @@ namespace TimFlyBrain
 {
     public static class Constants
     {
-        public static int ELEVATION_MAX_FOR_SECURITY_STOP = 5;
+        public const int ELEVATION_MAX_FOR_SECURITY_STOP = 5;
 
-        public static int COMPENSED_MOVMENT_VALUE = 5;
+        public const int COMPENSED_MOVMENT_VALUE = 5;
 
+        public const int MAX_ELEVATION_VALUE_RECEIVE = 200;
+        public const int MAX_PITCH_VALUE_RECEIVE = 200;
+        public const int MAX_ROLL_VALUE_RECEIVE = 200;
     }
 }

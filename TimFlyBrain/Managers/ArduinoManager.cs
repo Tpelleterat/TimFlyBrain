@@ -143,7 +143,10 @@ namespace Managers
         /// <param name="message">Message a envoyer</param>
         public void ChangeElevation(int value)
         {
-            int compensedValue = value * Constants.COMPENSED_MOVMENT_VALUE;
+            int newValue = value < Constants.MAX_ELEVATION_VALUE_RECEIVE
+                ? value : Constants.MAX_ELEVATION_VALUE_RECEIVE;
+
+            int compensedValue = newValue * Constants.COMPENSED_MOVMENT_VALUE;
 
             if (_elevationIndice != compensedValue)
             {
@@ -158,7 +161,9 @@ namespace Managers
         /// <param name="value">valeur</param>
         public void ChangePich(int value)
         {
-            int compensedValue = value * Constants.COMPENSED_MOVMENT_VALUE;
+            int newValue = GetUnsignedValueWithLimit(value, Constants.MAX_PITCH_VALUE_RECEIVE);
+
+            int compensedValue = newValue * Constants.COMPENSED_MOVMENT_VALUE;
 
             _pichIndice = compensedValue;
         }
@@ -169,7 +174,9 @@ namespace Managers
         /// <param name="value">valeur</param>
         public void ChangeRoll(int value)
         {
-            int compensedValue = value * Constants.COMPENSED_MOVMENT_VALUE;
+            int newValue = GetUnsignedValueWithLimit(value, Constants.MAX_ROLL_VALUE_RECEIVE);
+
+            int compensedValue = newValue * Constants.COMPENSED_MOVMENT_VALUE;
 
             _rollIndice = compensedValue;
         }
@@ -249,7 +256,7 @@ namespace Managers
 
             if (_elevationIndice >= Constants.ELEVATION_MAX_FOR_SECURITY_STOP)
             {
-                while (_elevationIndice < Constants.ELEVATION_MAX_FOR_SECURITY_STOP)
+                while (_elevationIndice >= Constants.ELEVATION_MAX_FOR_SECURITY_STOP)
                 {
                     ChangeElevation(_elevationIndice--);
                     await Task.Delay(100);
@@ -257,6 +264,21 @@ namespace Managers
             }
 
             ChangeElevation(0);
+        }
+
+        private int GetUnsignedValueWithLimit(int value, int max)
+        {
+            int newValue = value;
+            if (value > 0 && value > max)
+            {
+                newValue = max;
+            }
+            else if (value < 0 && value < -max)
+            {
+                newValue = -max;
+            }
+
+            return value;
         }
 
         #region Handlers
