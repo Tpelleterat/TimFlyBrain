@@ -53,9 +53,14 @@ namespace Models
                 {
                     string message = dr.ReadLine();
 
-                    if (OnMessageReceived != null && !string.IsNullOrEmpty(message))
-                        OnMessageReceived(this, message);
-
+                    if (!string.IsNullOrEmpty(message))
+                    {
+                        OnMessageReceived?.Invoke(this, message);
+                    }
+                    else
+                    {
+                        ClientDisconnect();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -102,8 +107,11 @@ namespace Models
 
             if (_isClientConnected != false)
             {
+                Debug.WriteLine("Client disconnect");
+
                 _isClientConnected = false;
                 _writer = null;
+                _clientSocket.Dispose();
                 _clientSocket = null;
 
                 if (OnClientDisconnected != null)
