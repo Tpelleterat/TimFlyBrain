@@ -47,6 +47,7 @@ namespace TimFlyBrain.Managers
             _arduinoManager.OnArduinoConnected += OnArduinoConnected;
             _arduinoManager.OnArduinoDisconnected += OnArduinoDisconnected;
             _arduinoManager.OnReceiveInitialzationOk += OnArduinoManagerInitialzationOk;
+            _arduinoManager.OnNewPosition += OnArduinoManagerNewPosition;
             _arduinoManager.StartConnectionLoop();
 
             _clientManager = new ClientManager();
@@ -62,6 +63,8 @@ namespace TimFlyBrain.Managers
 
             _isInitialized = true;
         }
+
+        
 
         private async Task ChangeStatus(BrainStatusEnum newStatus)
         {
@@ -80,8 +83,7 @@ namespace TimFlyBrain.Managers
         #region Handlers
 
         #region Arduino handlers
-
-
+        
         private async void OnArduinoDisconnected(object sender, EventArgs e)
         {
             await ChangeStatus(BrainStatusEnum.ControllerNotConnected);
@@ -95,6 +97,11 @@ namespace TimFlyBrain.Managers
         private async void OnArduinoManagerInitialzationOk(object sender, EventArgs e)
         {
             await ChangeStatus(BrainStatusEnum.Fly);
+        }
+
+        private void OnArduinoManagerNewPosition(object sender, string message)
+        {
+
         }
 
         #endregion

@@ -27,6 +27,7 @@ namespace Managers
 
         const string INIT_OK_MESSAGE = "INIT_OK";
 
+        public event EventHandler<string> OnNewPosition;
         public event EventHandler OnArduinoConnected;
         public event EventHandler OnArduinoDisconnected;
         public event EventHandler OnReceiveInitialzationOk;
@@ -119,6 +120,14 @@ namespace Managers
             if (message.Contains(INIT_OK_MESSAGE))
             {
                 Initialization();
+            }
+            else
+            {
+#warning DEBUG
+                message = message.Replace(":", "");
+                message = message.Replace(";", "");
+
+                OnNewPosition?.Invoke(this, message);
             }
         }
 
