@@ -1,13 +1,129 @@
-﻿<Page
-    x:Class="TimFlyBrain.MainPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:TimFlyBrain"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+﻿<Page x:Class="TimFlyBrain.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:TimFlyBrain"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+        <!--DRONE MOTORS INDICATIONS-->
+        <Grid x:Name="DroneMotorsIndication"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Center"
+              Height="600"
+              Width="600">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="Txt_ValueMotorTopLeft"
+                       Grid.Row="0"
+                       Text="aaaaa"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="30" />
+
+            <TextBlock  x:Name="Txt_ValueMotorTopRight"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Text="bbbbb"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="30" />
+
+            <TextBlock  x:Name="Txt_ValueMotorBottomLeft"
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="cccccc"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="30" />
+
+            <TextBlock  x:Name="Txt_ValueMotorBottomRight"
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Text="ddddd"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="30" />
+
+            <!--DRONE COPRS-->
+            <Grid Margin="80,80"
+                  RenderTransformOrigin="0.5,0.5"
+                  Background="#FF003AFF"
+                  UseLayoutRounding="False"
+                  Grid.RowSpan="3"
+                  d:LayoutRounding="Auto"
+                  Grid.ColumnSpan="3">
+                <Grid.RenderTransform>
+                    <CompositeTransform Rotation="45" />
+                </Grid.RenderTransform>
+
+                <TextBlock Text="↑"
+                           TextAlignment="Center"
+                           FontSize="200"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <CompositeTransform Rotation="-45" />
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+
+            </Grid>
+
+            <!--MOTEUR AVANT GAUCHE-->
+            <Border BorderBrush="{x:Null}"
+                    VerticalAlignment="Top"
+                    Height="100"
+                    Width="100"
+                    HorizontalAlignment="Left">
+                <TextBlock x:Name="FrontLeftMotorValue_tb"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           TextAlignment="Center"
+                           FontSize="20" />
+            </Border>
+
+            <!--MOTEUR AVANT DROITE-->
+            <Border BorderBrush="{x:Null}"
+                    VerticalAlignment="Top"
+                    Height="100"
+                    Width="100"
+                    HorizontalAlignment="Right"
+                    Grid.Column="1">
+                <TextBlock x:Name="FrontRightMotorValue_tb" />
+            </Border>
+
+            <!--MOTEUR ARRIERE GAUCHE-->
+            <Border BorderBrush="{x:Null}"
+                    Height="100"
+                    Width="100"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Left"
+                    Grid.Row="1">
+                <TextBlock x:Name="BackLeftMotorValue_tb" />
+            </Border>
+
+            <!--MOTEUR ARRIERE DROITE-->
+            <Border BorderBrush="{x:Null}"
+                    Height="100"
+                    Width="100"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Grid.Row="1"
+                    Grid.Column="1">
+                <TextBlock x:Name="BackRightMotorValue_tb" />
+            </Border>
+        </Grid>
     </Grid>
 </Page>

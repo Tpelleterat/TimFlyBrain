@@ -10,6 +10,7 @@ namespace TimFlyBrain.Managers
 {
     public class GlobalManager
     {
+        public event EventHandler<string> OnNewMotorsValues;
         private BrainStatusEnum _status = BrainStatusEnum.ControllerNotConnected;
         private ArduinoManager _arduinoManager;
         private ClientManager _clientManager;
@@ -64,8 +65,6 @@ namespace TimFlyBrain.Managers
             _isInitialized = true;
         }
 
-        
-
         private async Task ChangeStatus(BrainStatusEnum newStatus)
         {
             _status = newStatus;
@@ -92,6 +91,9 @@ namespace TimFlyBrain.Managers
         private async void OnArduinoConnected(object sender, EventArgs e)
         {
             await ChangeStatus(BrainStatusEnum.Initialization);
+
+            //DEBUG
+            _arduinoManager.SendInisialisation();
         }
 
         private async void OnArduinoManagerInitialzationOk(object sender, EventArgs e)
@@ -101,7 +103,7 @@ namespace TimFlyBrain.Managers
 
         private void OnArduinoManagerNewPosition(object sender, string message)
         {
-
+            OnNewMotorsValues?.Invoke(this, message);
         }
 
         #endregion
