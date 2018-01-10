@@ -91,10 +91,7 @@ namespace TimFlyBrain.Managers
         private async void OnArduinoConnected(object sender, EventArgs e)
         {
             await ChangeStatus(BrainStatusEnum.Initialization);
-
-            //DEBUG
-            _arduinoManager.SendInisialisation();
-        }
+ }
 
         private async void OnArduinoManagerInitialzationOk(object sender, EventArgs e)
         {

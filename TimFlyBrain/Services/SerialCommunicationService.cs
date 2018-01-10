@@ -87,7 +87,7 @@ namespace Services
         private async void ReadLoop(IInputStream stream)
         {
             var dataReader = new DataReader(stream);
-            byte[] buffer = new byte[8];
+            byte[] buffer = new byte[9];
 
             while (_deviceConnected)
             {
